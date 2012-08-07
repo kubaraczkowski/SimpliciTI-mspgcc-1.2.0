@@ -194,7 +194,9 @@
 
 /* -------------------- debounce macro -------------------- */
 #ifndef __bsp_BUTTON_DEBOUNCE_WAIT__
+#ifndef __GNUC__
 #error "ERROR: Debounce delay macro is missing."
+#endif
 #endif
 
 
