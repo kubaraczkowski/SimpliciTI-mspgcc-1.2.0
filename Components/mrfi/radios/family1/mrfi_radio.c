@@ -40,7 +40,9 @@
  *                                          Includes
  * ------------------------------------------------------------------------------------------------
  */
+#ifndef __GNUC__
 #include <string.h>
+#endif
 #include "mrfi.h"
 #include "bsp.h"
 #include "bsp_macros.h"

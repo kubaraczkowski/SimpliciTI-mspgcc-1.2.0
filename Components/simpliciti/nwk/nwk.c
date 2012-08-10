@@ -36,7 +36,9 @@
 /******************************************************************************
  * INCLUDES
  */
+#ifndef __GNUC__
 #include <string.h>
+#endif
 #include "bsp.h"
 #include "mrfi.h"
 #include "nwk_types.h"
