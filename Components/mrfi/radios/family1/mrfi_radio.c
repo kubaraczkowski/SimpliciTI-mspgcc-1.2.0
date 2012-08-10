@@ -203,10 +203,10 @@
  * ------------------------------------------------------------------------------------------------
  */
 #define MRFI_SYNC_PIN_IS_HIGH()                     MRFI_GDO0_PIN_IS_HIGH()
-//#define MRFI_ENABLE_SYNC_PIN_INT()                  MRFI_ENABLE_GDO0_INT()
-#define MRFI_ENABLE_SYNC_PIN_INT()                  ( INFIX( P, __mrfi_GDO0_PORT__, IE )  |= ( ( rx_isr_context == true ) ? 0 : BV(__mrfi_GDO0_BIT__) ) )
-//#define MRFI_DISABLE_SYNC_PIN_INT()                 MRFI_DISABLE_GDO0_INT()
-#define MRFI_DISABLE_SYNC_PIN_INT()                 ( INFIX( P, __mrfi_GDO0_PORT__, IE )  &= ~( ( rx_isr_context == true ) ? 0 : BV(__mrfi_GDO0_BIT__) ) )
+#define MRFI_ENABLE_SYNC_PIN_INT()                  MRFI_ENABLE_GDO0_INT()
+//#define MRFI_ENABLE_SYNC_PIN_INT()                  ( INFIX( P, __mrfi_GDO0_PORT__, IE )  |= ( ( rx_isr_context == true ) ? 0 : BV(__mrfi_GDO0_BIT__) ) )
+#define MRFI_DISABLE_SYNC_PIN_INT()                 MRFI_DISABLE_GDO0_INT()
+//#define MRFI_DISABLE_SYNC_PIN_INT()                 ( INFIX( P, __mrfi_GDO0_PORT__, IE )  &= ~( ( rx_isr_context == true ) ? 0 : BV(__mrfi_GDO0_BIT__) ) )
 #define MRFI_SYNC_PIN_INT_IS_ENABLED()              MRFI_GDO0_INT_IS_ENABLED()
 #define MRFI_CLEAR_SYNC_PIN_INT_FLAG()              MRFI_CLEAR_GDO0_INT_FLAG()
 #define MRFI_SYNC_PIN_INT_FLAG_IS_SET()             MRFI_GDO0_INT_FLAG_IS_SET()
