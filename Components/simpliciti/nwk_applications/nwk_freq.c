@@ -36,7 +36,13 @@
  * INCLUDES
  */
 
+#ifndef __GNUC__ // it seems string.h is included only for NULL. Replace by conditional NULL definition
 #include <string.h>
+#else
+#ifndef NULL
+#define NULL 0
+#endif
+#endif
 #include "bsp.h"
 #include "mrfi.h"
 #include "nwk_types.h"
