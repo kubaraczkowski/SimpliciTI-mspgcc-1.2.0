@@ -55,7 +55,14 @@
  */
 #include "mcus/bsp_msp430_defs.h"
 
-	//typedef   unsigned short  uint16_t;
+#ifdef __GNUC__
+    typedef signed char int8_t;
+    typedef signed short int16_t;
+    typedef signed long int32_t;
+    typedef unsigned char uint8_t;
+    typedef unsigned short uint16_t;
+    typedef unsigned long uint32_t;
+#endif
 
 /* ------------------------------------------------------------------------------------------------
  *                                          Clock
