@@ -100,7 +100,7 @@
 /* ------------------ Unrecognized Compiler ------------------ */
 #else
 #ifdef __GNUC__
-#include <io.h>
+#include <msp430.h>
 #include <signal.h>
 #include <iomacros.h>
 #define __bsp_ISTATE_T__ uint16_t
