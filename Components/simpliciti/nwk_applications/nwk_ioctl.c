@@ -123,7 +123,7 @@ smplStatus_t nwk_rawSend(ioctlRawSend_t *info)
       break;
   }
 
-  if (pOutFrame = nwk_buildFrame(info->port, info->msg, info->len, hops))
+  if ((pOutFrame = nwk_buildFrame(info->port, info->msg, info->len, hops)))
   {
 #ifdef NWK_PLL
     // get access to the packet data

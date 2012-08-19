@@ -97,6 +97,17 @@
 /* Initialization call provided in CCE environment before standard C-startup */
 #define BSP_EARLY_INIT(void)  int _system_pre_init(void)
 	
+/* ------------------------ MSPGCC :-D ----------------------- */
+#elif (defined __GNUC__ )
+#include <msp430.h>
+#define __bsp_ISTATE_T__ uint16_t
+#define __bsp_ISR_FUNCTION__(f,v) __attribute__((interrupt(v))) void f(void)
+#define __bsp_ENABLE_INTERRUPTS__() __eint()
+#define __bsp_DISABLE_INTERRUPTS__() __dint()
+#define __bsp_INTERRUPTS_ARE_ENABLED__() (READ_SR & 0x8)
+#define __bsp_GET_ISTATE__() (READ_SR & 0x8)
+#define __bsp_RESTORE_ISTATE__(x) st(if((x&GIE))_BIS_SR(GIE);)
+
 /* ------------------ Unrecognized Compiler ------------------ */
 #else
 #error "ERROR: Unknown compiler."
@@ -123,6 +134,8 @@
 #define __bsp_CODE_MEMSPACE__   /* blank */
 #define __bsp_XDATA_MEMSPACE__  /* blank */
 
+#ifndef __GNUC__
+
 typedef   signed char     int8_t;
 typedef   signed short    int16_t;
 typedef   signed long     int32_t;
@@ -130,6 +143,11 @@ typedef   signed long     int32_t;
 typedef   unsigned char   uint8_t;
 typedef   unsigned short  uint16_t;
 typedef   unsigned long   uint32_t;
+
+#else
+#include <stdint.h>
+
+#endif
 
 #ifndef NULL
 #define NULL 0

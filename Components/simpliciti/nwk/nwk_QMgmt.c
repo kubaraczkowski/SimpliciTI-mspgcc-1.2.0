@@ -37,7 +37,11 @@
 /******************************************************************************
  * INCLUDES
  */
+#ifdef __GNUC__
+#include <in430.h>
+#else
 #include <intrinsics.h>
+#endif
 #include <string.h>
 #include "bsp.h"  
 #include "mrfi.h"

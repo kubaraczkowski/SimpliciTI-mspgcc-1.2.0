@@ -294,11 +294,12 @@ smplStatus_t SMPL_SendOpt(linkID_t lid, uint8_t *msg, uint8_t len, txOpt_t optio
   frameInfo_t  *pFrameInfo;
   connInfo_t   *pCInfo     = nwk_getConnInfo(lid);
   smplStatus_t  rc         = SMPL_BAD_PARAM;
-  uint8_t       radioState = MRFI_GetRadioState();
+  uint8_t       radioState;
   uint8_t       ackreq     = 0;
 #if defined(ACCESS_POINT)
   uint8_t  loc;
 #endif
+  radioState = MRFI_GetRadioState();
 
   /* we have the connection info for this Link ID. make sure it is valid. */
    if (!pCInfo || ((rc=nwk_checkConnInfo(pCInfo, CHK_TX)) != SMPL_SUCCESS))
