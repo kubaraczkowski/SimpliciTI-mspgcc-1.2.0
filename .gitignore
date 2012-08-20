@@ -10,3 +10,9 @@
 *.lai
 *.la
 *.a
+
+# outputs of mspgcc
+*.elf
+*.a43
+*.lst
+
