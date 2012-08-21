@@ -1,16 +1,16 @@
 main_LinkTo.o: main_LinkTo.c ../../Components/bsp/bsp.h \
- ../../Components/bsp/boards/LaunchpadG2553/bsp_board_defs.h \
+ ../../Components/bsp/boards/LAUNCHPADG2553/bsp_board_defs.h \
  ../../Components/bsp/mcus/bsp_msp430_defs.h \
- ../../Components/bsp/boards/LaunchpadG2553/bsp_config.h \
+ ../../Components/bsp/boards/LAUNCHPADG2553/bsp_config.h \
  ../../Components/bsp/bsp_macros.h ../../Components/mrfi/mrfi.h \
  ../../Components/mrfi/mrfi_defs.h \
  ../../Components/simpliciti/nwk/nwk_types.h \
  ../../Components/simpliciti/nwk/nwk_api.h \
  ../../Components/bsp/drivers/bsp_leds.h \
- ../../Components/bsp/boards/LaunchpadG2553/bsp_led_defs.h \
- ../../Components/bsp/boards/LaunchpadG2553/bsp_board_defs.h \
+ ../../Components/bsp/boards/LAUNCHPADG2553/bsp_led_defs.h \
+ ../../Components/bsp/boards/LAUNCHPADG2553/bsp_board_defs.h \
  ../../Components/bsp/drivers/code/bsp_generic_leds.h \
  ../../Components/bsp/bsp_macros.h \
  ../../Components/bsp/drivers/bsp_buttons.h \
- ../../Components/bsp/boards/LaunchpadG2553/bsp_button_defs.h \
+ ../../Components/bsp/boards/LAUNCHPADG2553/bsp_button_defs.h \
  ../../Components/bsp/drivers/code/bsp_generic_buttons.h
