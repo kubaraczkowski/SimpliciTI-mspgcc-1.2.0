@@ -22,7 +22,7 @@ INCLUDES = -I${MRFI_PATH}/         		\
 	   -I${NWK_SIM_PATH}/       	   	\
 	   -I${NWK_APP_PATH}/
 RF       = -DMRFI_CC2500
-BOARD    = LaunchpadG2553
+BOARD    = LAUNCHPADG2553
 
 #configuration de l'application
 SMPL_NWK_CONFIG  += -DMAX_APP_PAYLOAD=10
