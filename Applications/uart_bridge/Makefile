@@ -6,14 +6,14 @@ NWK_APP_PATH = ${SIMPLICITI_COMPONENTS_PATH}/simpliciti/nwk_applications
 NWK_SIM_PATH = ${SIMPLICITI_COMPONENTS_PATH}/simpliciti/nwk
 MRFI_PATH    = ${SIMPLICITI_COMPONENTS_PATH}/mrfi
 
-NAME     = sender
+NAME     = UART_Bridge
 
 OBJECTS  = mrfi.o bsp.o nwk_api.o            			\
 	   nwk.o nwk_join.o nwk_frame.o nwk_link.o nwk_ioctl.o 	\
 	   nwk_globals.o nwk_freq.o nwk_ping.o nwk_mgmt.o      	\
 	   nwk_security.o nwk_QMgmt.o
 
-DEPS     = main_LinkTo.dep
+DEPS     = main_UART_Bridge.dep
 CPU      = msp430g2553
 INCLUDES = -I${MRFI_PATH}/         		\
 	   -I${BSP_PATH}/                  	\
@@ -47,7 +47,7 @@ CC       = msp430-gcc
 #all should be the first target. it's built when make is run without args
 all: ${NAME}
 
-sender: sender.elf sender.a43 sender.lst
+UART_Bridge: UART_Bridge.elf UART_Bridge.a43 UART_Bridge.lst
 
 #configure the next line if you want to use the serial download
 download: download-jtag
@@ -58,8 +58,8 @@ download: download-jtag
 
 #additional rules for files
 
-sender.elf:    main_LinkTo.o ${OBJECTS}
-	${CC} ${CFLAGS} -o $@ main_LinkTo.o ${OBJECTS}
+UART_Bridge.elf:    main_UART_Bridge.o ${OBJECTS}
+	${CC} ${CFLAGS} -o $@ main_UART_Bridge.o ${OBJECTS}
 
 %.a43: %.elf
 	msp430-objcopy -O ihex $^ $@
@@ -83,10 +83,10 @@ download-bsl: all
 	msp430-bsl -e ${NAME}.elf
 
 distclean: clean
-	rm -f sender.elf sender.a43 sender.lst
+	rm -f UART_Bridge.elf UART_Bridge.a43 UART_Bridge.lst
 
 clean:
-	rm -f main_LinkTo.o ${OBJECTS} ${DEPS}\
+	rm -f main_UART_Bridge.o ${OBJECTS} ${DEPS}\
 	rm -f out.eps *~
 
 #backup archive

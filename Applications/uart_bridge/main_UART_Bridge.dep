@@ -1,4 +1,4 @@
-main_LinkTo.o: main_LinkTo.c ../../Components/bsp/bsp.h \
+main_UART_Bridge.o: main_UART_Bridge.c ../../Components/bsp/bsp.h \
  ../../Components/bsp/boards/LaunchpadG2553/bsp_board_defs.h \
  ../../Components/bsp/mcus/bsp_msp430_defs.h \
  ../../Components/bsp/boards/LaunchpadG2553/bsp_config.h \
