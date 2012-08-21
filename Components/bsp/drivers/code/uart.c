@@ -111,7 +111,7 @@ __idata_reentrant __interrupt void uart_1_rx_irq( void )
  * IRQs for MSP430+CCxxxx using IAR
  */
 
-#elif ( defined __IAR_SYSTEMS_ICC__ ) && ( defined __ICC430__ )
+#elif ( defined __IAR_SYSTEMS_ICC__ ) && ( defined __ICC430__ ) || (defined __GNUC__)
 
 #pragma vector=USCIAB0TX_VECTOR
 __interrupt void uart_tx_enter_irq( void );
@@ -166,7 +166,8 @@ __interrupt void uart_cts_irq( void )
  * IRQs for MSP430+CCxxxx using Code Composer
  */
 
-#elif  (defined __TI_COMPILER_VERSION__ ) || (defined __GNUC__)
+#elif  (defined __TI_COMPILER_VERSION__ ) 
+//#elif  (defined __TI_COMPILER_VERSION__ ) || (defined __GNUC__)
 
 BSP_ISR_FUNCTION( uart_tx_enter_irq, USCIAB0TX_VECTOR )
 {
