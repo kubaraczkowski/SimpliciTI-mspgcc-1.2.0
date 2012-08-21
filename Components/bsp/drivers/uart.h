@@ -38,7 +38,7 @@
 /******************************************************************************
  * INCLUDES
  */
-#ifdef __STD_C__
+#ifdef __GNUC__
 #include <stdbool.h> /* supports bool, true, and false */ 
 
 #else
@@ -370,8 +370,10 @@ SFRUNION( _U1GCR_,   0xFC, DECL_BIT_FIELDS_4( unsigned char, U1CPOL, 1, U1CPHA, 
 /* set parity */
 #define UART_INIT_PARITY( uart, parity ) ( ( parity == UART_PARITY_NONE ) \
         ? UART_PARITY_DISABLE( uart, parity ) : UART_PARITY_ENABLE( uart, parity ) )
+/*
 //( ( parity == UART_PARITY_ENABLED ) \
                     ? UART_PARITY_ENABLE( uart ) : UART_PARITY_DISABLE( uart ) )
+*/
 
 /* set number of stop bits */
 #define UART_INIT_SPB( uart, spb ) ( ( spb == UART_SPB_1_STOP_BIT ) \
@@ -513,7 +515,7 @@ Again, a little fixed point optimization and rounding results in
  *                                Macros and Defines for MSP430 variants
  * ------------------------------------------------------------------------------------------------
  */
-#elif ( defined __IAR_SYSTEMS_ICC__ ) && ( defined __ICC430__ ) || (  defined __TI_COMPILER_VERSION__)
+#elif ( defined __IAR_SYSTEMS_ICC__ ) && ( defined __ICC430__ ) || (  defined __TI_COMPILER_VERSION__) || (defined __GNUC__)
 
 #include "pp_utils.h"
 #include "msp430.h"

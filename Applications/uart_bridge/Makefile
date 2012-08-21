@@ -8,7 +8,7 @@ MRFI_PATH    = ${SIMPLICITI_COMPONENTS_PATH}/mrfi
 
 NAME     = UART_Bridge
 
-OBJECTS  = mrfi.o bsp.o nwk_api.o            			\
+OBJECTS  = mrfi.o bsp.o uart_intfc.o uart.o nwk_api.o            			\
 	   nwk.o nwk_join.o nwk_frame.o nwk_link.o nwk_ioctl.o 	\
 	   nwk_globals.o nwk_freq.o nwk_ping.o nwk_mgmt.o      	\
 	   nwk_security.o nwk_QMgmt.o
@@ -20,7 +20,8 @@ INCLUDES = -I${MRFI_PATH}/         		\
 	   -I${BSP_PATH}/drivers/          	\
 	   -I${BSP_PATH}/boards/${BOARD}/  	\
 	   -I${NWK_SIM_PATH}/       	   	\
-	   -I${NWK_APP_PATH}/
+	   -I${NWK_APP_PATH}/ 				\
+	   -I./
 RF       = -DMRFI_CC2500
 BOARD    = LAUNCHPADG2553
 
@@ -114,6 +115,13 @@ mrfi.o:	${MRFI_PATH}/mrfi.c
 	@echo CC $<
 
 bsp.o: ${BSP_PATH}/bsp.c
+	${CC} ${CFLAGS} -c $< -o $@
+	@echo CC $<
+
+uart.o: ${BSP_PATH}/drivers/code/uart.c 
+	${CC} ${CFLAGS} -c $< -o $@ 
+	@echo CC $<
+uart_intfc.o: ${BSP_PATH}/drivers/code/uart_intfc.c 
 	${CC} ${CFLAGS} -c $< -o $@
 	@echo CC $<
 

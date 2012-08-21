@@ -36,6 +36,7 @@
  * INCLUDES
  */
 #include "bsp.h"
+#include "options.h"
 #include "uart.h"
 
 /******************************************************************************
@@ -165,7 +166,7 @@ __interrupt void uart_cts_irq( void )
  * IRQs for MSP430+CCxxxx using Code Composer
  */
 
-#elif  defined __TI_COMPILER_VERSION__ 
+#elif  (defined __TI_COMPILER_VERSION__ ) || (defined __GNUC__)
 
 BSP_ISR_FUNCTION( uart_tx_enter_irq, USCIAB0TX_VECTOR )
 {

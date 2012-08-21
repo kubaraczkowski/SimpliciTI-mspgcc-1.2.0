@@ -49,7 +49,7 @@
 #endif
 
 
-void main (void)
+int main (void)
 {
   /* holds length of current message */
   uint8_t len; 
