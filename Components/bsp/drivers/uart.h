@@ -18,7 +18,7 @@
   you may not use, reproduce, copy, prepare derivative works of, modify, distribute,
   perform, display or sell this Software and/or its documentation for any purpose.
 
-  YOU FURTHER ACKNOWLEDGE AND AGREE THAT THE SOFTWARE AND DOCUMENTATION ARE PROVIDED “AS IS”
+  YOU FURTHER ACKNOWLEDGE AND AGREE THAT THE SOFTWARE AND DOCUMENTATION ARE PROVIDED "AS IS"
   WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION, ANY
   WARRANTY OF MERCHANTABILITY, TITLE, NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
   IN NO EVENT SHALL TEXAS INSTRUMENTS OR ITS LICENSORS BE LIABLE OR OBLIGATED UNDER CONTRACT,
@@ -588,8 +588,14 @@ Again, a little fixed point optimization and rounding results in
 #define IO_PORT_SET_SELECT( port, bit, mode ) \
                                IO_PORT_REGISTER_BIT_SET( port, bit, SEL, mode, \
                                   IO_PORT_SELECT_PERIPHERAL, IO_PORT_SELECT_IO )
+#define IO_PORT_SET_SELECT2( port, bit, mode ) \
+                               IO_PORT_REGISTER_BIT_SET( port, bit, SEL2, mode, \
+                                  IO_PORT_SELECT_PERIPHERAL, IO_PORT_SELECT_IO )
 #define IO_PORT_GET_SELECT( port, bit ) \
                                IO_PORT_REGISTER_BIT_GET( port, bit, SEL, \
+                                  IO_PORT_SELECT_PERIPHERAL, IO_PORT_SELECT_IO )
+#define IO_PORT_GET_SELECT2( port, bit ) \
+                               IO_PORT_REGISTER_BIT_GET( port, bit, SEL2, \
                                   IO_PORT_SELECT_PERIPHERAL, IO_PORT_SELECT_IO )
 
 #define IO_PORT_INTERRUPT_DISABLED 0
@@ -660,6 +666,7 @@ Again, a little fixed point optimization and rounding results in
 #ifndef UART_RTS_BIT_NUM
   #define UART_RTS_BIT_NUM 6
 #endif
+
 
 #define UART_RTS_ASSERTED   IO_PORT_OUTPUT_HI
 #define UART_RTS_DEASSERTED IO_PORT_OUTPUT_LO
@@ -802,6 +809,8 @@ Again, a little fixed point optimization and rounding results in
   ( UART_RESET( num, loc ),  /* reset the uart */                                                  \
     IO_PORT_SET_SELECT( UART_TX_PORT_NUM, UART_TX_BIT_NUM, IO_PORT_SELECT_PERIPHERAL ),            \
     IO_PORT_SET_SELECT( UART_RX_PORT_NUM, UART_RX_BIT_NUM, IO_PORT_SELECT_PERIPHERAL ),            \
+    IO_PORT_SET_SELECT2( UART_TX_PORT_NUM, UART_TX_BIT_NUM, IO_PORT_SELECT_PERIPHERAL ),           \
+    IO_PORT_SET_SELECT2( UART_RX_PORT_NUM, UART_RX_BIT_NUM, IO_PORT_SELECT_PERIPHERAL ),           \
     UART_CTS_RTS_INIT( UART_RTS_PORT_NUM, UART_RTS_BIT_NUM, UART_CTS_PORT_NUM, UART_CTS_BIT_NUM ), \
     UART_PARITY_SET( num, loc, parity ),                                                           \
     UART_BYTE_ORDER_SET( num, loc, UART_LSB_FIRST ),                                               \
