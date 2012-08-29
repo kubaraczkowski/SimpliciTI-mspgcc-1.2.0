@@ -51,6 +51,8 @@
 
 int main (void)
 {
+  WDTCTL = WDTPW + WDTHOLD;
+
   /* holds length of current message */
   uint8_t len; 
   
@@ -66,8 +68,13 @@ int main (void)
   BSP_Init( );
 
   SMPL_Init( NULL );
+  BSP_TURN_ON_LED1( );
   
   uart_intfc_init( );
+  //P1SEL |= BIT1+BIT2;
+  //P1SEL2 |= BIT1+BIT2;
+
+  tx_send_wait( "radio initialized....\r\n", 23 );
 
   /* turn on the radio so we are always able to receive data asynchronously */
   SMPL_Ioctl( IOCTL_OBJ_RADIO, IOCTL_ACT_RADIO_RXON, NULL );
@@ -95,7 +102,7 @@ int main (void)
   }
 #endif
 
-  tx_send_wait( "Link Established!\r\nReady...\r\n", 29 );
+  tx_send_wait( "Link Established!\r\n", 19 );
   
   /* turn off the led */
   BSP_TURN_OFF_LED1( );
@@ -124,6 +131,7 @@ int main (void)
         while( SMPL_Send( LinkID, rx, len ) != SMPL_SUCCESS )
           ;
         led_tmr = INDICATOR_TIME_OUT;   /* update activity time out */
+      tx_send_wait( tx, len );
         
         /* By forcing a minimum delay between transmissions we guarantee
         * a window for receiving packets.  This is necessary as the radio

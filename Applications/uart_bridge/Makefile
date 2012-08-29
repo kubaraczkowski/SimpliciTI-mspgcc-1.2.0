@@ -1,20 +1,23 @@
 # makefile configuration
 
+NAME     = UART_Bridge
+SOURCE   = main_UART_Bridge
+DEPS     = SimpliciTI.dep
+CPU      = msp430g2553
+RF       = -DMRFI_CC2500
+BOARD    = LAUNCHPADG2553
+
 SIMPLICITI_COMPONENTS_PATH = ../../Components
 BSP_PATH     = ${SIMPLICITI_COMPONENTS_PATH}/bsp
 NWK_APP_PATH = ${SIMPLICITI_COMPONENTS_PATH}/simpliciti/nwk_applications
 NWK_SIM_PATH = ${SIMPLICITI_COMPONENTS_PATH}/simpliciti/nwk
 MRFI_PATH    = ${SIMPLICITI_COMPONENTS_PATH}/mrfi
 
-NAME     = UART_Bridge
-
 OBJECTS  = mrfi.o bsp.o uart_intfc.o uart.o nwk_api.o            			\
 	   nwk.o nwk_join.o nwk_frame.o nwk_link.o nwk_ioctl.o 	\
 	   nwk_globals.o nwk_freq.o nwk_ping.o nwk_mgmt.o      	\
 	   nwk_security.o nwk_QMgmt.o
 
-DEPS     = main_UART_Bridge.dep
-CPU      = msp430g2553
 INCLUDES = -I${MRFI_PATH}/         		\
 	   -I${BSP_PATH}/                  	\
 	   -I${BSP_PATH}/drivers/          	\
@@ -22,10 +25,8 @@ INCLUDES = -I${MRFI_PATH}/         		\
 	   -I${NWK_SIM_PATH}/       	   	\
 	   -I${NWK_APP_PATH}/ 				\
 	   -I./
-RF       = -DMRFI_CC2500
-BOARD    = LAUNCHPADG2553
 
-#configuration de l'application
+# configuration details for SimpliciTI
 SMPL_NWK_CONFIG  += -DMAX_APP_PAYLOAD=10
 SMPL_NWK_CONFIG  += -DMAX_NWK_PAYLOAD=10
 SMPL_NWK_CONFIG  += -DNUM_CONNECTIONS=2
@@ -36,7 +37,10 @@ SMPL_NWK_CONFIG  += -DDEFAULT_LINK_TOKEN=0x01020304
 SMPL_NWK_CONFIG  += -DMAX_HOPS_FROM_AP=1
 SMPL_NWK_CONFIG  += -DSIZE_INFRAME_Q=2
 SMPL_NWK_CONFIG  += -DSIZE_OUTFRAME_Q=2
-SMPL_NWK_CONFIG  += -DTHIS_DEVICE_ADDRESS="{0x79, 0x56, 0x34, 0x13}" 
+SMPL_NWK_CONFIG  += -DTHIS_DEVICE_ADDRESS="{0x79, 0x56, 0x34, 0x11}" 
+
+#SMPL_NWK_CONFIG  += -DLINK_TO=2
+
 
 CFLAGS   = ${RF} ${SMPL_NWK_CONFIG} -mmcu=${CPU} -O2 -Wall -g ${INCLUDES} 
 
@@ -48,7 +52,7 @@ CC       = msp430-gcc
 #all should be the first target. it's built when make is run without args
 all: ${NAME}
 
-UART_Bridge: UART_Bridge.elf UART_Bridge.a43 UART_Bridge.lst
+$(NAME): $(NAME).elf $(NAME).a43 $(NAME).lst
 
 #configure the next line if you want to use the serial download
 download: download-jtag
@@ -59,8 +63,8 @@ download: download-jtag
 
 #additional rules for files
 
-UART_Bridge.elf:    main_UART_Bridge.o ${OBJECTS}
-	${CC} ${CFLAGS} -o $@ main_UART_Bridge.o ${OBJECTS}
+$(NAME).elf:    $(SOURCE).o ${OBJECTS}
+	${CC} ${CFLAGS} -o $@ $(SOURCE).o ${OBJECTS}
 
 %.a43: %.elf
 	msp430-objcopy -O ihex $^ $@
@@ -83,11 +87,14 @@ download-jtag: all
 download-bsl: all
 	msp430-bsl -e ${NAME}.elf
 
+prog: $(NAME).elf
+	mspdebug rf2500 "prog $(NAME).elf"
+
 distclean: clean
-	rm -f UART_Bridge.elf UART_Bridge.a43 UART_Bridge.lst
+	rm -f $(NAME).elf $(NAME).a43 $(NAME).lst
 
 clean:
-	rm -f main_UART_Bridge.o ${OBJECTS} ${DEPS}\
+	rm -f $(SOURCE).o ${OBJECTS} ${DEPS}\
 	rm -f out.eps *~
 
 #backup archive

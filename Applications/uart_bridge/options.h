@@ -17,7 +17,7 @@
  * ------------------------------------------------------------------------------------------------
  */ 
 #define RX_TX_BUFFER_SIZE  50      /* Size of transmit FIFO and receive FIFO */
-#define UART_BAUD_RATE     115200
+#define UART_BAUD_RATE     9600 
 #define UART_FLOW_CONTROL  UART_FLOW_CONTROL_OFF  /* _ON or _OFF */
 #define UART_PARITY_MODE   UART_PARITY_NONE      /* _NONE, _EVEN, or _ODD */ 
 #define UART_STOP_BITS     UART_1_STOP_BIT       /* _1_STOP_BIT or _2_STOP_BITS */
@@ -61,10 +61,10 @@
  *   On CCMSP-EM430F2618 Daughter Board for SmartRF®05 board, to map to RS-232:
  *   TX pin = P3.4     RX pin = P3.5     */
   
-  #define UART_TX_PORT_NUM  3    
-  #define UART_TX_BIT_NUM   4    
-  #define UART_RX_PORT_NUM  3    
-  #define UART_RX_BIT_NUM   5    
+  #define UART_TX_PORT_NUM  1    
+  #define UART_TX_BIT_NUM   2    
+  #define UART_RX_PORT_NUM  1    
+  #define UART_RX_BIT_NUM   1    
   
 /*  Specify two I/O pins as CTS and RTS UART pins for hardware-handshaking:
  *   On CCMSP-EM430F2618 Daughter Board for SmartRF®05 board, to map to RS-232:
