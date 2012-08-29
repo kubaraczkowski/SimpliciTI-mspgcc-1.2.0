@@ -79,7 +79,7 @@ static uint8_t sIterationsPerUsec = 0;
  * @return      0 - don't intialize data segments / 1 - do initialization
  **************************************************************************************************
 */
-BSP_EARLY_INIT(void)
+int BSP_EARLY_INIT(void)
 {
   /* Disable watchdog timer */
   WDTCTL = WDTPW | WDTHOLD;
@@ -141,7 +141,7 @@ void BSP_InitBoard(void)
 void BSP_Delay(uint16_t usec)
 #if !defined(SW_TIMER)
 {
-
+  TACCTL0 &= ~CCIFG;
   TAR = 0; /* initial count */
   TACCR0 = BSP_TIMER_CLK_MHZ*usec; /* compare count. (delay in ticks) */
 

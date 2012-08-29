@@ -37,7 +37,11 @@
 /******************************************************************************
  * INCLUDES
  */
-#ifndef __GNUC__ // it seems string.h is included only for NULL. Replace by conditional NULL definition
+#ifdef __GNUC__
+#include <in430.h>
+#else
+#include <intrinsics.h>
+#endif
 #include <string.h>
 #else
 #ifndef NULL

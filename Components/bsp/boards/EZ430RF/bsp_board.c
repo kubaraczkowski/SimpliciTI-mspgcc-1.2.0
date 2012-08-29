@@ -141,7 +141,7 @@ void BSP_InitBoard(void)
 void BSP_Delay(uint16_t usec)
 #if !defined(SW_TIMER)
 {
-
+  TACCTL0 &= ~CCIFG;
   TAR = 0; /* initial count */
   TACCR0 = BSP_TIMER_CLK_MHZ*usec; /* compare count. (delay in ticks) */
 

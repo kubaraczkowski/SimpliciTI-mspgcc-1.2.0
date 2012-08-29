@@ -63,7 +63,7 @@
  *   Schematic   :  TS1
  *   Description :  Push Button
  *   Polarity    :  Active Low
- *   GPIO        :  P1.2
+ *   GPIO        :  P1.3
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 #define __bsp_BUTTON1_BIT__             3

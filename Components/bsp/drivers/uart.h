@@ -18,7 +18,7 @@
   you may not use, reproduce, copy, prepare derivative works of, modify, distribute,
   perform, display or sell this Software and/or its documentation for any purpose.
 
-  YOU FURTHER ACKNOWLEDGE AND AGREE THAT THE SOFTWARE AND DOCUMENTATION ARE PROVIDED “AS IS”
+  YOU FURTHER ACKNOWLEDGE AND AGREE THAT THE SOFTWARE AND DOCUMENTATION ARE PROVIDED "AS IS"
   WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION, ANY
   WARRANTY OF MERCHANTABILITY, TITLE, NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
   IN NO EVENT SHALL TEXAS INSTRUMENTS OR ITS LICENSORS BE LIABLE OR OBLIGATED UNDER CONTRACT,
@@ -38,8 +38,14 @@
 /******************************************************************************
  * INCLUDES
  */
+#ifdef __GNUC__
 #include <stdbool.h> /* supports bool, true, and false */ 
 
+#else
+#define bool unsigned char
+#define true 1
+#define false 0 
+#endif
 
 #include <stddef.h>  /* supports NULL macro */
 
@@ -262,13 +268,8 @@ SFRUNION( _U1GCR_,   0xFC, DECL_BIT_FIELDS_4( unsigned char, U1CPOL, 1, U1CPHA, 
 #define UART_ACTIVE_BUSY 1
 
 /* uart parity states */
-#if ( defined MRFI_CC2530 ) || ( defined MRFI_CC2531 ) || ( defined MRFI_CC2533 )
-  #define UART_PARITY_ENABLED  1
-  #define UART_PARITY_DISABLED 0
-#else
-  #define UART_PARITY_ENABLED  0
-  #define UART_PARITY_DISABLED 1
-#endif
+#define UART_PARITY_ENABLED  0
+#define UART_PARITY_DISABLED 1
 
 /* uart flush the uart */
 #define UART_FLUSH_FLUSH_NOW 1
@@ -281,13 +282,8 @@ SFRUNION( _U1GCR_,   0xFC, DECL_BIT_FIELDS_4( unsigned char, U1CPOL, 1, U1CPHA, 
 /* uart bit 9 or parity states */
 #define UART_D9_HI          1
 #define UART_D9_LO          0
-#if ( defined MRFI_CC2530 ) || ( defined MRFI_CC2531 ) || ( defined MRFI_CC2533 )
-  #define UART_D9_EVEN_PARITY 1
-  #define UART_D9_ODD_PARITY  0
-#else
-  #define UART_D9_EVEN_PARITY 0
-  #define UART_D9_ODD_PARITY  1
-#endif
+#define UART_D9_EVEN_PARITY 0
+#define UART_D9_ODD_PARITY  1
 #define UART_SET_PARITY_EVEN( uart )       ( UART_D9( uart ) = UART_D9_EVEN_PARITY )
 #define UART_SET_PARITY_ODD( uart )        ( UART_D9( uart ) = UART_D9_ODD_PARITY )
 #define UART_SET_PARITY_MODE( uart, mode ) ( ( mode == UART_PARITY_EVEN ) \
@@ -374,8 +370,10 @@ SFRUNION( _U1GCR_,   0xFC, DECL_BIT_FIELDS_4( unsigned char, U1CPOL, 1, U1CPHA, 
 /* set parity */
 #define UART_INIT_PARITY( uart, parity ) ( ( parity == UART_PARITY_NONE ) \
         ? UART_PARITY_DISABLE( uart, parity ) : UART_PARITY_ENABLE( uart, parity ) )
+/*
 //( ( parity == UART_PARITY_ENABLED ) \
                     ? UART_PARITY_ENABLE( uart ) : UART_PARITY_DISABLE( uart ) )
+*/
 
 /* set number of stop bits */
 #define UART_INIT_SPB( uart, spb ) ( ( spb == UART_SPB_1_STOP_BIT ) \
@@ -517,7 +515,7 @@ Again, a little fixed point optimization and rounding results in
  *                                Macros and Defines for MSP430 variants
  * ------------------------------------------------------------------------------------------------
  */
-#elif ( defined __IAR_SYSTEMS_ICC__ ) && ( defined __ICC430__ ) || (  defined __TI_COMPILER_VERSION__)
+#elif ( defined __IAR_SYSTEMS_ICC__ ) && ( defined __ICC430__ ) || (  defined __TI_COMPILER_VERSION__) || (defined __GNUC__)
 
 #include "pp_utils.h"
 #include "msp430.h"
@@ -590,8 +588,14 @@ Again, a little fixed point optimization and rounding results in
 #define IO_PORT_SET_SELECT( port, bit, mode ) \
                                IO_PORT_REGISTER_BIT_SET( port, bit, SEL, mode, \
                                   IO_PORT_SELECT_PERIPHERAL, IO_PORT_SELECT_IO )
+#define IO_PORT_SET_SELECT2( port, bit, mode ) \
+                               IO_PORT_REGISTER_BIT_SET( port, bit, SEL2, mode, \
+                                  IO_PORT_SELECT_PERIPHERAL, IO_PORT_SELECT_IO )
 #define IO_PORT_GET_SELECT( port, bit ) \
                                IO_PORT_REGISTER_BIT_GET( port, bit, SEL, \
+                                  IO_PORT_SELECT_PERIPHERAL, IO_PORT_SELECT_IO )
+#define IO_PORT_GET_SELECT2( port, bit ) \
+                               IO_PORT_REGISTER_BIT_GET( port, bit, SEL2, \
                                   IO_PORT_SELECT_PERIPHERAL, IO_PORT_SELECT_IO )
 
 #define IO_PORT_INTERRUPT_DISABLED 0
@@ -662,6 +666,7 @@ Again, a little fixed point optimization and rounding results in
 #ifndef UART_RTS_BIT_NUM
   #define UART_RTS_BIT_NUM 6
 #endif
+
 
 #define UART_RTS_ASSERTED   IO_PORT_OUTPUT_HI
 #define UART_RTS_DEASSERTED IO_PORT_OUTPUT_LO
@@ -804,6 +809,8 @@ Again, a little fixed point optimization and rounding results in
   ( UART_RESET( num, loc ),  /* reset the uart */                                                  \
     IO_PORT_SET_SELECT( UART_TX_PORT_NUM, UART_TX_BIT_NUM, IO_PORT_SELECT_PERIPHERAL ),            \
     IO_PORT_SET_SELECT( UART_RX_PORT_NUM, UART_RX_BIT_NUM, IO_PORT_SELECT_PERIPHERAL ),            \
+    IO_PORT_SET_SELECT2( UART_TX_PORT_NUM, UART_TX_BIT_NUM, IO_PORT_SELECT_PERIPHERAL ),           \
+    IO_PORT_SET_SELECT2( UART_RX_PORT_NUM, UART_RX_BIT_NUM, IO_PORT_SELECT_PERIPHERAL ),           \
     UART_CTS_RTS_INIT( UART_RTS_PORT_NUM, UART_RTS_BIT_NUM, UART_CTS_PORT_NUM, UART_CTS_BIT_NUM ), \
     UART_PARITY_SET( num, loc, parity ),                                                           \
     UART_BYTE_ORDER_SET( num, loc, UART_LSB_FIRST ),                                               \

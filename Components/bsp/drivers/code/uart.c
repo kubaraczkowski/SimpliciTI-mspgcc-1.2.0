@@ -36,6 +36,7 @@
  * INCLUDES
  */
 #include "bsp.h"
+#include "options.h"
 #include "uart.h"
 
 /******************************************************************************
@@ -74,16 +75,7 @@ __idata_reentrant __interrupt void uart_0_tx_irq( void );
 #pragma vector=UART_IRQ_VECTOR( UART_NUMBER_0, TX )
 __idata_reentrant __interrupt void uart_0_tx_irq( void )
 {
-  /* work-a-round for XCH instruction */
-  bspIState_t istate;
-  istate = __bsp_GET_ISTATE__();
-  BSP_ENABLE_INTERRUPTS();
-
   uart_tx_irq( );
-
-  /* work-a-round for XCH instruction */
-  __bsp_RESTORE_ISTATE__(istate);
-  
   return;
 }
 
@@ -92,16 +84,7 @@ __idata_reentrant __interrupt void uart_1_tx_irq( void );
 #pragma vector=UART_IRQ_VECTOR( UART_NUMBER_1, TX )
 __idata_reentrant __interrupt void uart_1_tx_irq( void )
 {
-  /* work-a-round for XCH instruction */
-  bspIState_t istate;
-  istate = __bsp_GET_ISTATE__();
-  BSP_ENABLE_INTERRUPTS();
-
   uart_tx_irq( );
-
-  /* work-a-round for XCH instruction */
-  __bsp_RESTORE_ISTATE__(istate);
-  
   return;
 }
 
@@ -110,16 +93,7 @@ __idata_reentrant __interrupt void uart_0_rx_irq( void );
 #pragma vector=UART_IRQ_VECTOR( UART_NUMBER_0, RX )
 __idata_reentrant __interrupt void uart_0_rx_irq( void )
 {
-  /* work-a-round for XCH instruction */
-  bspIState_t istate;
-  istate = __bsp_GET_ISTATE__();
-  BSP_ENABLE_INTERRUPTS();
-
   uart_rx_irq( );
-
-  /* work-a-round for XCH instruction */
-  __bsp_RESTORE_ISTATE__(istate);
-  
   return;
 }
 
@@ -128,16 +102,7 @@ __idata_reentrant __interrupt void uart_1_rx_irq( void );
 #pragma vector=UART_IRQ_VECTOR( UART_NUMBER_1, RX )
 __idata_reentrant __interrupt void uart_1_rx_irq( void )
 {
-  /* work-a-round for XCH instruction */
-  bspIState_t istate;
-  istate = __bsp_GET_ISTATE__();
-  BSP_ENABLE_INTERRUPTS();
-
   uart_rx_irq( );
-
-  /* work-a-round for XCH instruction */
-  __bsp_RESTORE_ISTATE__(istate);
-  
   return;
 }
 
@@ -146,7 +111,7 @@ __idata_reentrant __interrupt void uart_1_rx_irq( void )
  * IRQs for MSP430+CCxxxx using IAR
  */
 
-#elif ( defined __IAR_SYSTEMS_ICC__ ) && ( defined __ICC430__ )
+#elif ( defined __IAR_SYSTEMS_ICC__ ) && ( defined __ICC430__ ) || (defined __GNUC__)
 
 #pragma vector=USCIAB0TX_VECTOR
 __interrupt void uart_tx_enter_irq( void );
@@ -201,7 +166,8 @@ __interrupt void uart_cts_irq( void )
  * IRQs for MSP430+CCxxxx using Code Composer
  */
 
-#elif  defined __TI_COMPILER_VERSION__ 
+#elif  (defined __TI_COMPILER_VERSION__ ) 
+//#elif  (defined __TI_COMPILER_VERSION__ ) || (defined __GNUC__)
 
 BSP_ISR_FUNCTION( uart_tx_enter_irq, USCIAB0TX_VECTOR )
 {

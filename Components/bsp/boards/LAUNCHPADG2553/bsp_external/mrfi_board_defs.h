@@ -32,7 +32,7 @@
 /* ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=
  *   MRFI (Minimal RF Interface)
  *   Board definition file.
- *   Target : Texas Instruments EZ430-RF2500
+ *   Target : Texas Instruments LaunchpadG2553-RF2500
  *            "MSP430 Wireless Development Tool"
  *   Radios : CC2500
  * ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=
@@ -46,6 +46,7 @@
  * ------------------------------------------------------------------------------------------------
  */
 #include "bsp.h"
+#include "pp_utils.h"
 
 /* ------------------------------------------------------------------------------------------------
  *                                           Defines
@@ -57,17 +58,19 @@
  * ------------------------------------------------------------------------------------------------
  */
 #define __mrfi_GDO0_BIT__                     0
-#define MRFI_CONFIG_GDO0_PIN_AS_INPUT()       st( P2SEL &= ~BV(__mrfi_GDO0_BIT__); ) /* clear pin special function default */
-#define MRFI_GDO0_PIN_IS_HIGH()               (P2IN & BV(__mrfi_GDO0_BIT__))
+#define __mrfi_GDO0_PORT__                    2
+#define MRFI_CONFIG_GDO0_PIN_AS_INPUT()       st( INFIX( P, __mrfi_GDO0_PORT__, SEL ) &= ~BV(__mrfi_GDO0_BIT__); ) /* clear pin special function default */
+#define MRFI_GDO0_PIN_IS_HIGH()               ( INFIX( P, __mrfi_GDO0_PORT__, IN ) & BV(__mrfi_GDO0_BIT__))
 
-#define MRFI_GDO0_INT_VECTOR                  PORT2_VECTOR
-#define MRFI_ENABLE_GDO0_INT()                st( P2IE  |=  BV(__mrfi_GDO0_BIT__); ) /* atomic operation */
-#define MRFI_DISABLE_GDO0_INT()               st( P2IE  &= ~BV(__mrfi_GDO0_BIT__); ) /* atomic operation */
-#define MRFI_GDO0_INT_IS_ENABLED()             (  P2IE  &   BV(__mrfi_GDO0_BIT__) )
-#define MRFI_CLEAR_GDO0_INT_FLAG()            st( P2IFG &= ~BV(__mrfi_GDO0_BIT__); ) /* atomic operation */
-#define MRFI_GDO0_INT_FLAG_IS_SET()            (  P2IFG &   BV(__mrfi_GDO0_BIT__) )
-#define MRFI_CONFIG_GDO0_RISING_EDGE_INT()    st( P2IES &= ~BV(__mrfi_GDO0_BIT__); ) /* atomic operation */
-#define MRFI_CONFIG_GDO0_FALLING_EDGE_INT()   st( P2IES |=  BV(__mrfi_GDO0_BIT__); ) /* atomic operation */
+
+#define MRFI_GDO0_INT_VECTOR                  INFIX( PORT, __mrfi_GDO0_PORT__, _VECTOR )
+#define MRFI_ENABLE_GDO0_INT()                st( INFIX( P, __mrfi_GDO0_PORT__, IE )  |=  BV(__mrfi_GDO0_BIT__); ) /* atomic operation */
+#define MRFI_DISABLE_GDO0_INT()               st( INFIX( P, __mrfi_GDO0_PORT__, IE )  &= ~BV(__mrfi_GDO0_BIT__); ) /* atomic operation */
+#define MRFI_GDO0_INT_IS_ENABLED()             (  INFIX( P, __mrfi_GDO0_PORT__, IE )  &   BV(__mrfi_GDO0_BIT__) )
+#define MRFI_CLEAR_GDO0_INT_FLAG()            st( INFIX( P, __mrfi_GDO0_PORT__, IFG ) &= ~BV(__mrfi_GDO0_BIT__); ) /* atomic operation */
+#define MRFI_GDO0_INT_FLAG_IS_SET()            (  INFIX( P, __mrfi_GDO0_PORT__, IFG ) &   BV(__mrfi_GDO0_BIT__) )
+#define MRFI_CONFIG_GDO0_RISING_EDGE_INT()    st( INFIX( P, __mrfi_GDO0_PORT__, IES ) &= ~BV(__mrfi_GDO0_BIT__); ) /* atomic operation */
+#define MRFI_CONFIG_GDO0_FALLING_EDGE_INT()   st( INFIX( P, __mrfi_GDO0_PORT__, IES ) |=  BV(__mrfi_GDO0_BIT__); ) /* atomic operation */
 
 
 /* ------------------------------------------------------------------------------------------------
@@ -75,17 +78,18 @@
  * ------------------------------------------------------------------------------------------------
  */
 #define __mrfi_GDO2_BIT__                     2
-#define MRFI_CONFIG_GDO2_PIN_AS_INPUT()       st( P2SEL &= ~BV(__mrfi_GDO2_BIT__); ) /* clear pin special function default */
-#define MRFI_GDO2_PIN_IS_HIGH()               (P2IN & BV(__mrfi_GDO2_BIT__))
+#define __mrfi_GDO2_PORT__                    2
+#define MRFI_CONFIG_GDO2_PIN_AS_INPUT()       st( INFIX( P, __mrfi_GDO2_PORT__, SEL ) &= ~BV(__mrfi_GDO2_BIT__); ) /* clear pin special function default */
+#define MRFI_GDO2_PIN_IS_HIGH()               ( INFIX( P, __mrfi_GDO2_PORT__, IN ) & BV(__mrfi_GDO2_BIT__))
 
-#define MRFI_GDO2_INT_VECTOR                  PORT2_VECTOR
-#define MRFI_ENABLE_GDO2_INT()                st( P2IE  |=  BV(__mrfi_GDO2_BIT__); ) /* atomic operation */
-#define MRFI_DISABLE_GDO2_INT()               st( P2IE  &= ~BV(__mrfi_GDO2_BIT__); ) /* atomic operation */
-#define MRFI_GDO2_INT_IS_ENABLED()             (  P2IE  &   BV(__mrfi_GDO2_BIT__) )
-#define MRFI_CLEAR_GDO2_INT_FLAG()            st( P2IFG &= ~BV(__mrfi_GDO2_BIT__); ) /* atomic operation */
-#define MRFI_GDO2_INT_FLAG_IS_SET()            (  P2IFG &   BV(__mrfi_GDO2_BIT__) )
-#define MRFI_CONFIG_GDO2_RISING_EDGE_INT()    st( P2IES &= ~BV(__mrfi_GDO2_BIT__); ) /* atomic operation */
-#define MRFI_CONFIG_GDO2_FALLING_EDGE_INT()   st( P2IES |=  BV(__mrfi_GDO2_BIT__); ) /* atomic operation */
+#define MRFI_GDO2_INT_VECTOR                  INFIX( PORT, __mrfi_GDO2_PORT__, _VECTOR )
+#define MRFI_ENABLE_GDO2_INT()                st( INFIX( P, __mrfi_GDO2_PORT__, IE )  |=  BV(__mrfi_GDO2_BIT__); ) /* atomic operation */
+#define MRFI_DISABLE_GDO2_INT()               st( INFIX( P, __mrfi_GDO2_PORT__, IE )  &= ~BV(__mrfi_GDO2_BIT__); ) /* atomic operation */
+#define MRFI_GDO2_INT_IS_ENABLED()             (  INFIX( P, __mrfi_GDO2_PORT__, IE )  &   BV(__mrfi_GDO2_BIT__) )
+#define MRFI_CLEAR_GDO2_INT_FLAG()            st( INFIX( P, __mrfi_GDO2_PORT__, IFG ) &= ~BV(__mrfi_GDO2_BIT__); ) /* atomic operation */
+#define MRFI_GDO2_INT_FLAG_IS_SET()            (  INFIX( P, __mrfi_GDO2_PORT__, IFG ) &   BV(__mrfi_GDO2_BIT__) )
+#define MRFI_CONFIG_GDO2_RISING_EDGE_INT()    st( INFIX( P, __mrfi_GDO2_PORT__, IES ) &= ~BV(__mrfi_GDO2_BIT__); ) /* atomic operation */
+#define MRFI_CONFIG_GDO2_FALLING_EDGE_INT()   st( INFIX( P, __mrfi_GDO2_PORT__, IES ) |=  BV(__mrfi_GDO2_BIT__); ) /* atomic operation */
 
 
 /* ------------------------------------------------------------------------------------------------
@@ -110,7 +114,7 @@
 #define __mrfi_SPI_SI_GPIO_BIT__              7
 #define MRFI_SPI_CONFIG_SI_PIN_AS_OUTPUT()    st( P1DIR |=  BV(__mrfi_SPI_SI_GPIO_BIT__); )
 #define MRFI_SPI_DRIVE_SI_HIGH()              st( P1OUT |=  BV(__mrfi_SPI_SI_GPIO_BIT__); )
-#define MRFI_SPI_DRIVE_SI_LOW()                st( P1OUT &= ~BV(__mrfi_SPI_SI_GPIO_BIT__); )
+#define MRFI_SPI_DRIVE_SI_LOW()               st( P1OUT &= ~BV(__mrfi_SPI_SI_GPIO_BIT__); )
 
 /* SO Pin Configuration */
 #define __mrfi_SPI_SO_GPIO_BIT__              6
@@ -120,10 +124,12 @@
 /* SPI Port Configuration */
 #define MRFI_SPI_CONFIG_PORT()                st( P1SEL |= BV(__mrfi_SPI_SCLK_GPIO_BIT__) |  \
                                                            BV(__mrfi_SPI_SI_GPIO_BIT__)   |  \
-                                                           BV(__mrfi_SPI_SO_GPIO_BIT__); \
-												  P1SEL2 |= BV(__mrfi_SPI_SCLK_GPIO_BIT__) |  \
+                                                           BV(__mrfi_SPI_SO_GPIO_BIT__);     \
+                                                 P1SEL2 |= BV(__mrfi_SPI_SCLK_GPIO_BIT__) |  \
                                                            BV(__mrfi_SPI_SI_GPIO_BIT__)   |  \
-                                                           BV(__mrfi_SPI_SO_GPIO_BIT__);)
+                                                           BV(__mrfi_SPI_SO_GPIO_BIT__); )
+
+
 
 /* read/write macros */
 #define MRFI_SPI_WRITE_BYTE(x)                st( IFG2 &= ~UCB0RXIFG;  UCB0TXBUF = x; )
@@ -164,7 +170,7 @@ st ( \
  *                                  Compile Time Integrity Checks
  **************************************************************************************************
  */
-#ifndef BSP_BOARD_Launchpad
+#ifndef BSP_BOARD_LAUNCHPADG2553
 #error "ERROR: Mismatch between specified board and MRFI configuration."
 #endif
 
