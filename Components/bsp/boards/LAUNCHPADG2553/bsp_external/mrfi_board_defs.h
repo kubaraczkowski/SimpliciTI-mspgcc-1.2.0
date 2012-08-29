@@ -124,7 +124,7 @@
 /* SPI Port Configuration */
 #define MRFI_SPI_CONFIG_PORT()                st( P1SEL |= BV(__mrfi_SPI_SCLK_GPIO_BIT__) |  \
                                                            BV(__mrfi_SPI_SI_GPIO_BIT__)   |  \
-                                                           BV(__mrfi_SPI_SO_GPIO_BIT__);    \ 
+                                                           BV(__mrfi_SPI_SO_GPIO_BIT__);     \
                                                  P1SEL2 |= BV(__mrfi_SPI_SCLK_GPIO_BIT__) |  \
                                                            BV(__mrfi_SPI_SI_GPIO_BIT__)   |  \
                                                            BV(__mrfi_SPI_SO_GPIO_BIT__); )
