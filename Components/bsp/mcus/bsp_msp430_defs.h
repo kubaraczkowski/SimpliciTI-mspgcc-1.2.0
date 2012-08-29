@@ -108,22 +108,8 @@
 #define __bsp_GET_ISTATE__() (READ_SR & 0x8)
 #define __bsp_RESTORE_ISTATE__(x) st(if((x&GIE))_BIS_SR(GIE);)
 
-/* ------------------ Unrecognized Compiler ------------------ */
-#else
-#ifdef __GNUC__
-#include <msp430.h>
-#include <signal.h>
-#include <iomacros.h>
-#define __bsp_ISTATE_T__ uint16_t
-#define __bsp_ISR_FUNCTION__(f,v) interrupt (v) f(void)
-#define __bsp_ENABLE_INTERRUPTS__() eint()
-#define __bsp_DISABLE_INTERRUPTS__() dint()
-#define __bsp_INTERRUPTS_ARE_ENABLED__() (READ_SR & 0x8)
-#define __bsp_GET_ISTATE__() (READ_SR & 0x8)
-#define __bsp_RESTORE_ISTATE__(x) st(if((x&GIE))_BIS_SR(GIE);)
 #else
 #error "ERROR: Unknown compiler."
-#endif
 #endif
 
 #if (defined BSP_COMPILER_IAR) || (defined BSP_COMPILER_CODE_COMPOSER)
@@ -155,7 +141,6 @@ typedef   signed long     int32_t;
 typedef   unsigned char   uint8_t;
 typedef   unsigned short  uint16_t;
 typedef   unsigned long   uint32_t;
-#endif
 
 #else
 #include <stdint.h>

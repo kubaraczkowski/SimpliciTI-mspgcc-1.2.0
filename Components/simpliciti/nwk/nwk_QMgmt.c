@@ -43,11 +43,6 @@
 #include <intrinsics.h>
 #endif
 #include <string.h>
-#else
-#ifndef NULL
-#define NULL 0
-#endif
-#endif
 #include "bsp.h"  
 #include "mrfi.h"
 #include "nwk_types.h"
